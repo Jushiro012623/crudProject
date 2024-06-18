@@ -34,7 +34,7 @@
             <label for="lastname" class="form-label">
                 Lastname
             </label>
-            <input type="email" name="lastname" class="form-control" id="lastname" autocomplete="off"  value="<?php echo $_SESSION['lastname']?>"  >
+            <input type="text" name="lastname" class="form-control" id="lastname" autocomplete="off"  value="<?php echo $_SESSION['lastname']?>"  >
         </div>
         <!-- mobile -->
         <div class="mb-3">

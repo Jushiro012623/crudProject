@@ -1,14 +1,9 @@
 
 <!-- html body -->
 <?php require('./components/header.php');?>
-<?php 
-
-    if(isset($_POST['login'])){
-        $username = $_POST['username'];
-        echo $username;
-    }
+<?php
+    require('./code/post.php');
 ?>
-
 
 <section class="login-wrapper">
 
@@ -30,10 +25,12 @@
         <label for="exampleInputPassword1" class="form-label">
             Password
         </label>
-        <input type="password" class="form-control" id="exampleInputPassword1">
+        <input type="password" name="password" class="form-control" id="exampleInputPassword1">
     </div>
     <!-- Submit button -->
-    <button type="submit" name="login" class="btn btn-primary" onClick={handleSubmit}>Login</button>
+    <button type="submit" name="login" class="btn btn-primary" onClick={handleSubmit} 
+        
+    >Login</button>
     </form>
 
 </section>

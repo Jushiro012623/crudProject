@@ -1,5 +1,5 @@
 <?php
-    require('./code/post.php');
+    require('./config/post.php');
     
 ?>
 <!-- html header -->
@@ -7,41 +7,47 @@
 <section class="login-wrapper">
 
     <form   class="form"
-            action="<?php $_SERVER['PHP_SELF'];?>"
+            action="<?php htmlspecialchars($_SERVER['PHP_SELF']);?>"
             method="POST"
+            autocomplete="off" 
     >
         <!-- <h3>Register</h3> -->
         <!-- Username -->
-        <div class="mb-3">
+        <div class="forminput mb-3">
             <label for="username" class="form-label">
                 Username
             </label>
-            <input type="text" class="form-control" id="username"  name="username" autocomplete="off" >
-            <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div> -->
+            <input type="text" class="form-control" id="username" value="<?php echo $username?>" name="username" >
+            <span id='userErr' class='form-text'><?php echo $usernameErr; ?> </span>
         </div>
         <!-- Email -->
         <div class="mb-3">
             <label for="email" class="form-label">
                 Email
             </label>
-            <input type="email" name="email" class="form-control" id="email" autocomplete="off"  >
+            <input type="text" name="email" class="form-control" id="email" value="<?php echo $email?>" >
+            <span id='userErr' class='form-text'><?php echo $emailErr; ?> </span>
         </div>
         <!-- Password -->
         <div class="mb-3">
             <label for="password" class="form-label">
                 Password
             </label>
-            <input type="password" class="form-control" name="password" id="password">
+            <input type="password" class="form-control" name="password" id="password" value="<?php echo $password?>">
+            <span id='userErr' class='form-text'><?php echo $passwordErr; ?> </span>
         </div>
         <!-- Confirm Password -->
         <div class="mb-3">
             <label for="confirm_password" class="form-label">
                 Confirm Password
             </label>
-            <input type="password" class="form-control" name="confirm_password" id="confirm_password">
+            <input type="password" class="form-control" name="confirm_password" id="confirm_password" value="<?php echo $confirm_password?>">
+            <span id='userErr' class='form-text'><?php echo $confirm_passwordErr; ?> </span>
         </div>
         <!-- Submit button -->
-        <button type="submit" name="register" class="btn btn-primary">Register</button>
+        <button type="submit" name="register" class="btn_signup btn btn-primary" ><?php if($loadingAnim == false ){echo 'Register';}else{echo '<i class="loading fa-solid fa-spinner"></i>';}?></button>
+        <a href="index.php" class="signup_link">already have an account?</a>
+
     </form>
     <h1></h1>
 </section>

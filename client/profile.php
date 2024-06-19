@@ -1,8 +1,4 @@
-<?php 
-    require('./code/conn.php');
-    require('./code/post.php');
-
-?>
+<?php require('./config/post.php');?>
 
 
 <!-- html header -->

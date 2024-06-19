@@ -4,6 +4,7 @@
 
 <?php
 
+session_start();
     //include connection
     require('./config/conn.php');
     $username = $email = $password = $confirm_password = "";
@@ -80,15 +81,15 @@
         if($sendToDB == true){
             $loadingAnim = true;
             // // echo "success sending";
-            // $query = "INSERT INTO `user_account` (`username`,`password`,`email`,`status`) VALUES ('$username','$dbPWD','$email','active')";
-            // $result = mysqli_query($conn, $query);
-            // header('Refresh:1 ; /crudapp/client/index.php');
+            $query = "INSERT INTO `user_account` (`username`,`password`,`email`,`status`) VALUES ('$username','$dbPWD','$email','active')";
+            $result = mysqli_query($conn, $query);
+            header('Refresh:1 ; /crudapp/client/index.php');
         }
     }
 
     //start session only when logged in
-    session_start();
     if($_SERVER['REQUEST_METHOD'] == 'POST' AND isset($_POST['login'])){
+        
         $username = mysqli_real_escape_string($conn, $_POST['username']);
         $password = mysqli_real_escape_string($conn, $_POST['password']);
         //validation of username
@@ -118,81 +119,42 @@
             $query = "SELECT * FROM `user_account` WHERE `username` = '$username' ";
             $result = mysqli_query($conn, $query);
             $row = mysqli_fetch_assoc($result);
-            if(mysqli_num_rows($result)){
+            if(mysqli_num_rows($result) == 1 AND  $username ==$row['username'] and password_verify($password, $row['password'])){
                 if($row['status'] == 'inactive'){
                     $passwordErr = "User not found";
                 }else{
                     $loadingAnim = true;
+                    //sessions the user info
+                    $_SESSION['id'] = $row['id'];
+                    $_SESSION['username'] = $row['username'] ;
+                    $_SESSION['firstname'] = $row['firstname'];
+                    $_SESSION['lastname'] = $row['lastname'];
+                    $_SESSION['email'] = $row['email'];
+                    $_SESSION['mobile'] = $row['mobile'];
+                    $_SESSION['bday'] = $row['bday'];
                     header('Refresh:1 ; /crudapp/client/home.php');
                 }
+            }else{
+                $passwordErr = "User not found";
             }
         }
     }
-        
-        
-    
-    // if(isset($_POST['login'])){
-    //     //user credentials
-    //     $username = $_POST['username'];
-    //     $password = $_POST['password'];
-    //     //sql query
-    //     $query = "SELECT * FROM `user_account` WHERE `username` = '$username' AND `password` = '$password'";
-    //     $result = mysqli_query($conn, $query);
-        
-    //     //if theres a result
-    //     if(mysqli_num_rows($result)){
-            
-    //         $row = mysqli_fetch_assoc($result);
-    //         //if active then login
-    //         if($row['status'] == 'active'){
-    //             echo 'active ';
-    //             echo 'success';
-    //             //sessions the user info
-    //             $_SESSION['id'] = $row['id'];
-    //             echo $_SESSION['id'];
-    //             $_SESSION['username'] = $row['username'] ;
-    //             $_SESSION['firstname'] = $row['firstname'];
-    //             $_SESSION['lastname'] = $row['lastname'];
-    //             $_SESSION['email'] = $row['email'];
-    //             $_SESSION['mobile'] = $row['mobile'];
-    //             $_SESSION['bday'] = $row['bday'];
-
-    //         }else{ // if the account is inactive 
-    //             echo 'inactive';
-    //         }
-    //     }else{ //if no user found
-    //         echo 'no users found';
-    //     }
-    //     //add validation next
-        
-    // }
-
-
-    //Profile post 
-
-    if (isset($_POST['edit_profile'])){
-        //set the session id to variable id
-        $id = $_SESSION['id'];
-        $username = $_POST['username'];
-        $firstname = $_POST['firstname'];
-        $lastname = $_POST['lastname'];
-        $email = $_POST['email'];
-        $mobile = $_POST['mobile'];
-        $bday = $_POST['bday'];
-
-        // if the firstname input is touch and has a str count of 1 (lenght of 1? is that even a name?)
-        if(strlen($firstname) == 1 AND !empty($firstname) ){
-            echo ' invalid';
-        }else{// if the firstname is untouch firstname is not set 
-            echo ' valid';
-            //update the value
-            $query = "UPDATE `user_account` SET `username` = '$username',
-            `firstname` = '$firstname',`lastname` = '$lastname',`email` = '$email',
-            `mobile` = '$mobile',`bday` = '$bday' WHERE `id` = $id ";
+    $postErr = '';
+    if ($_SERVER['REQUEST_METHOD'] == 'POST' AND isset($_POST['post'])){
+        $post = mysqli_real_escape_string($conn, $_POST['status']);
+        $postID = $_SESSION['id'];
+        $poster = $_SESSION['username'];
+        if(!empty($post)){
+            $query = "INSERT INTO `post`(`body`,`poster`,`account_id`, `status`) VALUES ('$post','$poster', '$postID', 'active')";
             $result = mysqli_query($conn, $query);
-            echo $id;
+        }else{
+            $postErr = 'Post something';
         }
-        #add readonly and editable
-        //next add validation
     }
-?>
+    
+
+    if($_SERVER['REQUEST_METHOD'] == 'POST' AND isset($_POST['delete'])){
+        $deletedID = $row['id'];
+        $query = "UPDATE `post` SET `status` = 'archive' WHERE `id` = $deletedID ";
+        $result = mysqli_query($conn, $query);
+    }

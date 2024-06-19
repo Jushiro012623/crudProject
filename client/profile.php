@@ -1,9 +1,10 @@
-<?php require('./config/post.php');?>
+<?php 
+    require('./config/post.php');
+    require('./components/header.php');
+    require('./components/navbar.php');
+    require('./redirecting.php');
 
-
-<!-- html header -->
-<?php require('./components/header.php');?>
-<?php require('./components/navbar.php');?>
+?>
 <div class="wrapper">
     <form class="post" method="POST" action="<?php $_SERVER['PHP_SELF']?>">
         <textarea name="status" placeholder="Share your Thoughts" id="status" cols="30" rows="10"></textarea>
@@ -12,13 +13,12 @@
     </form>
     <?php
     $sessId = $_SESSION['id'];
-    $q = "SELECT * FROM `post` WHERE `account_id` = $sessId AND `status` = 'active' ORDER BY posted_at DESC";
-    $r = mysqli_query($conn,$q);
-    while ($row = mysqli_fetch_assoc($r)){
+    $query = "SELECT * FROM `post` WHERE `account_id` = $sessId AND `status` = 'active' ORDER BY posted_at DESC";
+    $result = mysqli_query($conn,$query);
+    while ($row = mysqli_fetch_assoc($result)){
 
-        require('./components/userpost.php');
+        require('./components/postview.php');
     }
-
     ?>
 
 </div>

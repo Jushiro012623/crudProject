@@ -1,16 +1,16 @@
 
 <!-- polish after finish -->
-
-
 <?php
 
-session_start();
+    session_start();
     //include connection
     require('./config/conn.php');
+    
     $username = $email = $password = $confirm_password = "";
     $usernameErr = $emailErr = $passwordErr = $confirm_passwordErr = "";
     $sendToDB = true;
     $loadingAnim = false;
+    $postErr = '';
     // Register post
     if($_SERVER['REQUEST_METHOD'] == "POST" AND isset($_POST['register'])){
         //user input
@@ -87,7 +87,7 @@ session_start();
         }
     }
 
-    //start session only when logged in
+    //LOGIN POST 
     if($_SERVER['REQUEST_METHOD'] == 'POST' AND isset($_POST['login'])){
         
         $username = mysqli_real_escape_string($conn, $_POST['username']);
@@ -127,11 +127,7 @@ session_start();
                     //sessions the user info
                     $_SESSION['id'] = $row['id'];
                     $_SESSION['username'] = $row['username'] ;
-                    $_SESSION['firstname'] = $row['firstname'];
-                    $_SESSION['lastname'] = $row['lastname'];
                     $_SESSION['email'] = $row['email'];
-                    $_SESSION['mobile'] = $row['mobile'];
-                    $_SESSION['bday'] = $row['bday'];
                     header('Refresh:1 ; /crudapp/client/home.php');
                 }
             }else{
@@ -139,7 +135,8 @@ session_start();
             }
         }
     }
-    $postErr = '';
+
+    //USER POST POST
     if ($_SERVER['REQUEST_METHOD'] == 'POST' AND isset($_POST['post'])){
         $post = mysqli_real_escape_string($conn, $_POST['status']);
         $postID = $_SESSION['id'];
@@ -151,10 +148,11 @@ session_start();
             $postErr = 'Post something';
         }
     }
-    
 
+    //DELETE POST
     if($_SERVER['REQUEST_METHOD'] == 'POST' AND isset($_POST['delete'])){
-        $deletedID = $row['id'];
-        $query = "UPDATE `post` SET `status` = 'archive' WHERE `id` = $deletedID ";
+        $postid = $_POST['postid'];
+        // echo $postid;
+        $query = "UPDATE `post` SET `status` = 'archive' WHERE `id` = $postid ";
         $result = mysqli_query($conn, $query);
     }

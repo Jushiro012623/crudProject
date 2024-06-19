@@ -1,7 +1,11 @@
-<?php require('./config/post.php');?>
-<?php require('./components/header.php')?>
+<?php 
 
-<?php require('./components/navbar.php')?>
+    require('./config/post.php');
+    require('./components/header.php');
+    require('./components/navbar.php');
+    
+    require('./redirecting.php');
+?>
 
 <div class="wrapper">
     <form class="post" method="POST" action="<?php $_SERVER['PHP_SELF']?>">
@@ -13,7 +17,7 @@
     $q = "SELECT * FROM `post` ORDER BY posted_at DESC";
     $r = mysqli_query($conn,$q);
     while ($row = mysqli_fetch_assoc($r)){
-        require('./components/userpost.php');
+        require('./components/postview.php');
     }
     ?>
 

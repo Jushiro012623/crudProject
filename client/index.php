@@ -1,8 +1,12 @@
 
 <!-- html body -->
-<?php require('./components/header.php');?>
-<?php
+<?php 
+    require('./components/header.php');
     require('./config/post.php');
+    if(isset($_SESSION['id']) AND isset($_SESSION['username']) AND  isset($_SESSION['email'])){
+        header('Location: /crudapp/client/home.php');
+        exit;
+    }
 ?>
 
 <section class="login-wrapper">
@@ -30,7 +34,7 @@
     </div>
     <!-- Submit button -->
     <button type="submit" name="login" class="btn_login btn btn-primary">
-        <?php if($loadingAnim == false ){echo 'Register';}else{echo '<i class="loading fa-solid fa-spinner"></i>';}?>
+        <?php if($loadingAnim == false ){echo 'Login';}else{echo '<i class="loading fa-solid fa-spinner"></i>';}?>
     </button>
     <a href="register.php" class="signup_link">don't have an account?</a>
     </form>

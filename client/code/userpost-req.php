@@ -36,11 +36,12 @@
         $result = mysqli_query($conn, $query);
         unset($_SESSION['body']);
         unset($_SESSION['postid']);
+        header('Location: /crudapp/client/home.php');
     }
     //EDIT POST
     if($_SERVER['REQUEST_METHOD'] == 'POST' AND isset($_POST['edit'])){
-
         $postid = $_POST['postid'];
+
         $query = "SELECT * FROM `post` WHERE `id` = $postid ";
         $result = mysqli_query($conn, $query);
         $row = mysqli_fetch_assoc($result);
@@ -59,6 +60,13 @@
         $query = "UPDATE `post` SET `body` = '$editstatus' WHERE `id` = $post ";
         $result = mysqli_query($conn, $query);
         $body =$editstatus;
+        header('Location: /crudapp/client/home.php');
+    }
+
+    //CANCEL EDIT
+    if($_SERVER['REQUEST_METHOD'] == 'POST' AND isset($_POST['cancel'])){     
+        
+        unset($_SESSION['postid']);
         header('Location: /crudapp/client/home.php');
     }
 ?>

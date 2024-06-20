@@ -19,9 +19,13 @@
     $sessId = $_SESSION['id'];
     $query = "SELECT * FROM `post` WHERE `account_id` = $sessId AND `status` = 'active' ORDER BY posted_at DESC";
     $result = mysqli_query($conn,$query);
-    while ($row = mysqli_fetch_assoc($result)){
-
-        require('./components/postview.php');
+    
+    if(mysqli_num_rows($result) > 0){
+        while ($row = mysqli_fetch_assoc($result)){
+            require('./components/postview.php');
+        }   
+    }else{
+        echo "<h1 style=\"width:100%; text-align:center;\" > YOU HAVE NO POST YET </h1>";
     }
     ?>
 

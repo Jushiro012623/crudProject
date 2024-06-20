@@ -1,11 +1,15 @@
 <?php 
-    require('./config/post.php');
+    require_once('./code/conn.php');
+    session_start();
+    require('./code/userpost-req.php');
     require('./components/header.php');
     require('./components/navbar.php');
     require('./redirecting.php');
 
 ?>
 <div class="wrapper">
+<div class="hometext"><span>YOUR POST</span></div>
+
     <form class="post" method="POST" action="<?php $_SERVER['PHP_SELF']?>">
         <textarea name="status" placeholder="Share your Thoughts" id="status" cols="30" rows="10"></textarea>
         <span id='postErr' class='form-text'><?php echo $postErr; ?> </span>

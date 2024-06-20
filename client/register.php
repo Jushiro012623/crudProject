@@ -1,9 +1,8 @@
 <?php
-    require('./config/post.php');
-    if(isset($_SESSION['id']) AND isset($_SESSION['username']) AND  isset($_SESSION['email'])){
-        header('Location: /crudapp/client/home.php');
-        exit;
-    }
+    session_start();
+    require_once('./code/conn.php');
+    require('./code/register-req.php');
+    
 ?>
 <!-- html header -->
 <?php require('./components/header.php');?>

@@ -1,12 +1,13 @@
 
 <!-- html body -->
 <?php 
+
+    session_start();
+
+    require_once('./code/conn.php');
     require('./components/header.php');
-    require('./config/post.php');
-    if(isset($_SESSION['id']) AND isset($_SESSION['username']) AND  isset($_SESSION['email'])){
-        header('Location: /crudapp/client/home.php');
-        exit;
-    }
+    require('./code/login-request.php');
+
 ?>
 
 <section class="login-wrapper">
